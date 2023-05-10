@@ -99,56 +99,35 @@ namespace ariel {
 	}
 
 	Fraction operator+ (const Fraction& fractionA, const Fraction& other) {
-		int add1 = fractionA.n() * other.d() +
-		fractionA.d() * other.n();
-		int add2 = fractionA.d() * other.d();
-		if(fractionA.n() > 0 && other.n() > 0){
-			if(add1 < fractionA.n() && add1 < other.n()){
-				throw std::overflow_error("large number");
-			}
+		long add1L = (long) fractionA.n() *(long) other.d() + (long)fractionA.d() * (long)other.n();
+		long add2L = (long) fractionA.d() *(long) other.d();
+		if(add1L < min_int || add2L< min_int || add1L > max_int || add2L > max_int){
+			throw std::overflow_error("large/small number");
 		}
-		if(fractionA.n() < 0 && other.n() < 0){
-			if(add1 > fractionA.n() && add1 > other.n()){
-				throw std::overflow_error("small number");
-			}
-		}
-		if(fractionA.d() > 0 && other.d() > 0){
-			if(add2 < fractionA.d() && add2 < other.d()){
-				throw std::overflow_error("large number");
-			}
-		}
-		if(fractionA.d() < 0 && other.d() < 0){
-			if(add2 > fractionA.d() && add2 > other.d()){
-				throw std::overflow_error("small number");
-			}
-		}
+		int add1 = (int) add1L;
+		int add2 = (int) add2L;
 		return Fraction(fractionA.numerator(add1, add2),fractionA.denominator(add1, add2));
 	}
 
 	Fraction operator- (const Fraction& fractionA, const Fraction& other) {
-		int sub1 = fractionA.n() * other.d() -
-			fractionA.d() * other.n();
-		int sub2 = fractionA.d() * other.d();
-		if(other.n() == min_int || other.n() == min_int+1){
-			throw std::overflow_error("large number");
+		long sub1L =(long)  fractionA.n() *(long)  other.d() - (long) fractionA.d() * (long) other.n();
+		long sub2L =(long) fractionA.d() *(long)  other.d();
+		if(sub1L < min_int || sub2L< min_int || sub1L > max_int || sub2L > max_int){
+			throw std::overflow_error("large/small number");
 		}
+		int sub1 = (int)sub1L;
+		int sub2 = (int)sub2L;
 		return Fraction(fractionA.numerator(sub1, sub2),fractionA.denominator(sub1, sub2));
 	}
 
 	Fraction operator* (const Fraction& fractionA, const Fraction& other) {
-		int max_int = std::numeric_limits<int>::max();
-		int mul1 = fractionA.n() * other.n();
-		int mul2 = fractionA.d() * other.d();
-		if(fractionA.n() > 0 && other.n() > 0){
-			if(mul1 < fractionA.n() && mul1 < other.n()){
-				throw std::overflow_error("large number");
-			}
+		long mul1L = (long)fractionA.n() * (long)other.n();
+		long mul2L = (long)fractionA.d() * (long)other.d();
+		if(mul1L < min_int || mul2L< min_int || mul1L > max_int || mul2L > max_int){
+			throw std::overflow_error("large/small number");
 		}
-		if(fractionA.d() > 0 && other.d() > 0){
-			if(mul2 < fractionA.d() && mul2 < other.d()){
-				throw std::overflow_error("large number");
-			}
-		}
+		int mul1 = (int)mul1L;
+		int mul2 = (int)mul2L;
 		return Fraction(fractionA.numerator(mul1, mul2),fractionA.denominator(mul1, mul2));
 	}
 
@@ -157,18 +136,13 @@ namespace ariel {
 		if(other.n() == 0){
 			throw std::runtime_error("This function threw an error!");
 		}
-		int div1 = fractionA.n() * other.d();
-		int div2 = fractionA.d() * other.n();
-		if(fractionA.n() > 0 && other.d() > 0){
-			if(div1 < fractionA.n() && div1 < other.d()){
-				throw std::overflow_error("large number");
-			}
+		long div1L = (long)fractionA.n() * (long)other.d();
+		long div2L = (long)fractionA.d() * (long)other.n();
+		if(div1L < min_int || div2L< min_int || div1L > max_int || div2L > max_int){
+			throw std::overflow_error("large/small number");
 		}
-		if(fractionA.d() > 0 && other.n() > 0){
-			if(div2 < fractionA.d() && div2 < other.n()){
-				throw std::overflow_error("large number");
-			}
-		}
+		int div1 = (int)div1L;
+		int div2 = (int)div2L;
 		return Fraction(fractionA.numerator(div1, div2),fractionA.denominator(div1, div2));
 	}
 
